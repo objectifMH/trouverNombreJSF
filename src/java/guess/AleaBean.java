@@ -22,6 +22,9 @@ public class AleaBean implements Serializable {
     private int devinette;
     private int utilisateur;
     private int nombre;
+    private int min ; 
+    private boolean fini ; 
+    
 
     /**
      * Creates a new instance of AleaBean
@@ -29,6 +32,7 @@ public class AleaBean implements Serializable {
     public AleaBean() {
         phrase = "Je pense à un nombre entre 1 et 99. Pouvez-vous le trouver ?";
         nombre = 0;
+        fini = false ; 
     }
 
     @PostConstruct
@@ -37,6 +41,7 @@ public class AleaBean implements Serializable {
         nombre = 0;
         phrase = "Je pense à un nombre entre 1 et 99. Pouvez-vous le trouver ?";
         utilisateur = 0 ; 
+        fini = false ; 
     }
 
     /**
@@ -69,19 +74,25 @@ public class AleaBean implements Serializable {
 
     public void comparer() {
         if (nombre > 4) {
+            fini = true ; 
             this.setPhrase("Perdu, veux tu rejouer ?");
         } else {
 
             if (utilisateur > getDevinette()) {
-                this.setPhrase("le nombre auquel je pense est plus petit");
+                this.setPhrase("le nombre auquel je pense est plus petit, il reste "+(5 - (nombre+1)) + " coup(s)");
             } else if (utilisateur < getDevinette()) {
-                this.setPhrase("le nombre auquel je pense est plus grand");
+                this.setPhrase("le nombre auquel je pense est plus grand, il reste "+(5 - (nombre+1)    ) + " coup(s)");
             } else {
                 this.setPhrase("Bravo , "+utilisateur+" est exactement au nombre auquel je pensais !! ");
+                nombre = 5 ; 
             }
+            nombre++;
         }
 
-        nombre++;
+        if ( fini == true ){
+            this.setPhrase("La partie est terminée !");
+        }
+        
 
     }
 
